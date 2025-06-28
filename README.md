@@ -14,7 +14,7 @@ This is an educational project by matlon GmbH
 
 ## 📋 Prerequisites
 
-- Python 3.8+
+- Python 3.12+
 - pip (Python package installer)
 
 ## 🛠️ Installation
