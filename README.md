@@ -170,6 +170,28 @@ Application log streaming with different severity levels.
 }
 ```
 
+### 6. Datetime Stream (`/stream/datetime`)
+Infinite datetime stream that sends the current server time every 30 seconds. This stream runs indefinitely and keeps the connection alive.
+
+this can be tested with curl:
+```bash
+curl -N http://localhost:8000/stream/datetime
+```
+
+**Events:**
+- `datetime`: Current datetime updates every 30 seconds
+
+**Example Response:**
+```json
+{
+  "datetime": "2024-01-15T10:30:00.123456",
+  "message": "Current server time",
+  "interval": "30 seconds"
+}
+```
+
+**Note:** This stream runs indefinitely and will continue until the client disconnects or the server is stopped.
+
 ## 🎯 Usage Examples
 
 ### JavaScript Client Example
@@ -226,6 +248,34 @@ curl -N http://localhost:8000/stream/chat
 
 # Test log stream
 curl -N http://localhost:8000/stream/logs
+
+# Test infinite datetime stream (runs indefinitely)
+curl -N http://localhost:8000/stream/datetime
+```
+
+**Testing the Infinite Datetime Stream:**
+The datetime stream runs indefinitely and sends updates every 30 seconds. To test it:
+
+1. **Start the stream:**
+   ```bash
+   curl -N http://localhost:8000/stream/datetime
+   ```
+
+2. **Let it run for a few minutes** to see multiple datetime updates
+
+3. **Stop the stream** by pressing `Ctrl+C` when you want to terminate the connection
+
+**Expected output:**
+```
+event: datetime
+data: {"datetime": "2024-01-15T10:30:00.123456", "message": "Current server time", "interval": "30 seconds"}
+
+event: datetime
+data: {"datetime": "2024-01-15T10:30:30.123456", "message": "Current server time", "interval": "30 seconds"}
+
+event: datetime
+data: {"datetime": "2024-01-15T10:31:00.123456", "message": "Current server time", "interval": "30 seconds"}
+...
 ```
 
 ## 🏗️ Project Structure

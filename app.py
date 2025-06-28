@@ -215,6 +215,27 @@ async def log_stream() -> EventSourceResponse:
     return EventSourceResponse(event_generator())
 
 
+@app.get("/stream/datetime")
+async def datetime_stream() -> EventSourceResponse:
+    """Infinite datetime stream that sends current datetime every 30 seconds"""
+
+    async def event_generator() -> AsyncGenerator[dict, None]:
+        while True:  # Infinite loop to keep the stream alive
+            # Send current datetime
+            data = {
+                "datetime": datetime.now().isoformat(),
+                "message": "Current server time",
+                "interval": "30 seconds",
+            }
+
+            yield {"event": "datetime", "data": json.dumps(data)}
+
+            # Wait 30 seconds before next update
+            await asyncio.sleep(30)
+
+    return EventSourceResponse(event_generator())
+
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
